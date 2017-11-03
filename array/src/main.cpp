@@ -1,36 +1,71 @@
 
 #include <iostream>
 
-#include "ArrayFunc/ArrayFunc.h"
+#include "Array/Array.h"
 
 int main ( int argc, char ** argv ) {
 
-    int uo_int_array[ 18 ] = { 10, 7, 1, 3, 2, 9, 5, 8, 6 };
+    Array < int > arr ( 10 );
+    Array < char > arr2 ( 10 );
 
-    char uo_char_array[ 18 ] = "adios";
+    arr.insert ( 5 );
+    arr.insert ( 0 );
+    arr.insert ( -5 );
+
+    arr2.insert ( 'z' );
+    arr2.insert ( 'o' );
+    arr2.insert ( 'a' );
+
+    arr.insert ( 2, 1 );
+    arr2.insert ( 'b', 0 );
 
     std::cout << "Inserting and show unordered int and char aray" << std::endl;
 
-    arrayInsert ( uo_int_array, -3 );
-    arrayInsert ( uo_int_array, 11 );
-
-    arrayInsert ( uo_char_array, 's' );
-    arrayInsert ( uo_char_array, 'e' );
-
-    showArray ( uo_int_array );
-    showArray ( uo_char_array );
+    arr.print ();
+    arr2.print ();
 
     std::cout << '\n';
 
     std::cout << "Deleting and show unordered int and char array" << std::endl;
 
-    deleteArrayElement ( uo_int_array, 5 );
-    deleteArrayElement ( uo_char_array, 'i' );
+    arr.removeAt ( 2 );
+    arr2.removeAt ( 3 );
 
-    showArray ( uo_int_array );
-    showArray ( uo_char_array );
+    arr.print ();
+    arr2.print ();
 
     std::cout << '\n';
+
+    std::cout << "Deleting an element of unordered int and char array" << std::endl;
+
+    arr.remove ( 5, false );
+    arr2.remove ( 'z', false );
+
+    arr.print ();
+    arr2.print ();
+
+    std::cout << '\n';
+
+    std::cout << "Deleting concurrent element of unordered int and char array" << std::endl;
+
+    arr.insert ( 2 );
+    arr.insert ( 2 );
+    arr.insert ( 10 );
+    arr.insert ( 6 );
+    arr.insert ( 2 );
+    arr2.insert ( 'x' );
+    arr2.insert ( 'b' );
+    arr2.insert ( 'x' );
+    arr2.insert ( 'x' );
+
+    arr.print ();
+    arr2.print ();
+
+    arr.remove ( 2, true );
+    arr2.remove ( 'x', true );
+
+    arr.print ();
+    arr2.print ();
 
     return 0;
 
