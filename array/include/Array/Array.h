@@ -121,22 +121,9 @@ template < class T > void Array< T >::_removeOne ( const T element ) {
 
 template < class T > void Array< T >::_removeMultiple ( const T element ) {
 
-    bool shift = false;
-
     for ( int i = 0; i < this -> length; i++ ) {
 
-        if ( shift ) this -> array [ i - 1 ] = this -> array [ i ];
-
-        if ( this -> array [ i ] == element ) {
-
-            this -> array [ i ] = this -> array [ i + 1 ];
-
-            this -> length --;
-            this -> lastIndex --;
-
-            shift = true;
-
-        }
+        this -> _removeOne ( element );
 
     }
 
