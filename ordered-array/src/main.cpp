@@ -11,34 +11,35 @@ int main ( int argc, char ** argv ) {
     OrderedArray < int > arr ( 10 );
     OrderedArray < char > arr2 ( 10 );
 
-    std::cout << "Inserting and show unordered int and char aray" << std::endl;
+    arr.insert ( 1 );
+    arr.insert ( 2 );
+    arr.insert ( 3 );
+
+    arr2.insert ( 'a' );
+    arr2.insert ( 'b' );
+    arr2.insert ( 'c' );
+
+    std::cout << "Inserting and show ordered int and char aray" << std::endl;
 
     arr.print ();
     arr2.print ();
 
     std::cout << '\n';
 
-    std::cout << "Deleting and show unordered int and char array" << std::endl;
+    std::cout << "Deleting and show ordered int and char array" << std::endl;
+
+    arr.remove ( 1 );
+    arr2.remove ( 'c' );
 
     arr.print ();
     arr2.print ();
 
     std::cout << '\n';
 
-    std::cout << "Deleting an element of unordered int and char array" << std::endl;
+    std::cout << "Searching" << std::endl;
 
-    arr.print ();
-    arr2.print ();
-
-    std::cout << '\n';
-
-    std::cout << "Deleting concurrent element of unordered int and char array" << std::endl;
-
-    arr.print ();
-    arr2.print ();
-
-    arr.print ();
-    arr2.print ();
+    std::cout << arr.search ( 2 ) << std::endl;
+    std::cout << arr2.search ( 'x' ) << std::endl;
 
     return 0;
 

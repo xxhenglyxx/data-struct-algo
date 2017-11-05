@@ -16,16 +16,19 @@ class OrderedArray {
         const int getLength () const;
 
         T insert ( const T element );
-        T insert ( const T element, const int index );
 
         T mutate ( const T element, const int index );
 
         void removeAt ( const int index );
-        T remove ( const T element, const bool multiple );
+        T remove ( const T element );
 
+        const int search ( const T element ) const;
+        
         void print ();
 
         const T indexOf ( const int index ) const;
+
+        const T next () const;
 
     private:
 
@@ -33,9 +36,11 @@ class OrderedArray {
         int size;
         int length;
         int lastIndex;
+        int nextValue;
 
         void _removeOne ( const T element );
-        void _removeMultiple ( const T element );
+
+        const int _search ( const T element, const int fisrt, const int last ) const;
 
 };
 
@@ -43,8 +48,9 @@ template < class T > OrderedArray< T >::OrderedArray ( const int size ) {
 
     this -> array = new T [ size ];
     this -> size = size;
-    this -> lastIndex = 0;
+    this -> lastIndex = -1;
     this -> length = 0;
+    this -> nextValue = 0;
 
 };
 
@@ -55,6 +61,7 @@ template < class T > OrderedArray< T >::OrderedArray ( const OrderedArray< T > a
     this -> size = size;
     this -> lastIndex = arr_length - 1;
     this -> length = arr_length;
+    this -> nextValue = 0;
 
     this -> array = new T [ size ];
 
@@ -118,36 +125,9 @@ template < class T > void OrderedArray< T >::_removeOne ( const T element ) {
 
 };
 
-template < class T > void OrderedArray< T >::_removeMultiple ( const T element ) {
+template < class T > T OrderedArray< T >::remove ( const T element ) {
 
-    bool shift = false;
-
-    for ( int i = 0; i < this -> length; i++ ) {
-
-        if ( shift ) this -> array [ i - 1 ] = this -> array [ i ];
-
-        if ( this -> array [ i ] == element ) {
-
-            this -> array [ i ] = this -> array [ i + 1 ];
-
-            this -> length --;
-            this -> lastIndex --;
-
-            shift = true;
-
-        }
-
-    }
-
-};
-
-template < class T > T OrderedArray< T >::remove ( const T element, const bool multiple ) {
-
-    if ( multiple ) {
-
-        this -> _removeMultiple ( element );
-
-    } else { this -> _removeOne ( element ); }
+    this -> _removeOne ( element );
 
     return element;
 
@@ -161,48 +141,10 @@ template < class T > T OrderedArray< T >::insert ( const T element ) {
 
     if ( this -> lastIndex > this -> size ) throw std::string ( "OrderedArray is full" );
 
-    this -> array [ this -> lastIndex ] = element;
-
     this -> lastIndex ++;
     this -> length ++;
 
-    return element;
-
-};
-
-template < class T > T OrderedArray< T >::insert ( const T element, const int index ) {
-
-    if ( index > this -> size || this -> lastIndex > this -> size ) throw std::string ( "OrderedArray is full" );
-
-    if ( index > this -> length ) throw std::string ( "OrderedArray cannot be insert further than existing position of array" );
-
-    T nextElement, toMutate;
-
-    for ( int i = 0; i < this -> length; i++ ) {
-
-        if ( i > index ) {
-
-            nextElement = this -> array [ i ];
-
-            this -> array [ i ] = toMutate;
-
-            toMutate = nextElement;
-
-        }
-
-        if ( i == index ) {
-
-            toMutate = this -> array [ i ];
-            nextElement = this -> array [ i + 1 ];
-
-            this -> array [ i ] = element;
-
-            this -> lastIndex ++;
-            this -> length ++;
-
-        } 
-
-    }
+    this -> array [ this -> lastIndex ] = element;
 
     return element;
 
@@ -242,4 +184,47 @@ template < class T >const T OrderedArray< T >::indexOf ( const int index ) const
 
 };
 
+template < class T > const T OrderedArray< T >::next () const {
+
+    const T element = this -> array [ this -> nextValue ];
+
+    if ( this -> nextValue < this -> length ) {
+
+        this -> nextValue ++;
+
+    } else if ( this -> nextValue > this -> length ) {
+
+        this -> nextValue = 0;
+
+    }
+
+    return element;
+
+};
+
+template < class T > const int OrderedArray< T >::search ( const T element ) const {
+
+    return this -> _search ( element, 0, this -> length - 1 );
+
+};
+
+template < class T > const int OrderedArray< T >::_search ( const T element, const int first, const int last ) const {
+
+    if ( first > last ) return -1;
+
+    const int mid = ( first + last ) / 2;
+
+    if ( this -> array [ mid ] == element ) return mid;
+
+    if ( this -> array [ mid ] > element ) {
+
+        return this -> _search ( element, first, mid - 1 );
+
+    } else {
+
+        return this -> _search ( element, mid + 1, last );
+
+    }
+    
+};
 #endif
