@@ -5,8 +5,8 @@
 
 int main ( int argc, char ** argv ) {
 
-    // !!! ORDERED ARRAY NOT SORTED ARRAY, SO THERE WONT BE METHOD TO SORT THIS
-    // BUT THE CLASS HAS METHOD FOR ORDERED OR SORTED ARRAY
+    //!!! ORDERED ARRAY NOT SORTED ARRAY, SO THERE WONT BE METHOD TO SORT THIS
+    //BUT THE CLASS HAS METHOD FOR ORDERED OR SORTED ARRAY
 
     OrderedArray < int > arr ( 10 );
     OrderedArray < char > arr2 ( 10 );
@@ -40,6 +40,16 @@ int main ( int argc, char ** argv ) {
 
     std::cout << arr.search ( 2 ) << std::endl;
     std::cout << arr2.search ( 'x' ) << std::endl;
+
+    std::cout << "\nTesting string type of array" << std::endl;
+
+    OrderedArray < std::string > stringArray ( 10 );
+
+    stringArray.insert ( "Hello" );
+    stringArray.insert ( "man" );
+    stringArray.insert ( "xmanlolxx" );
+
+    stringArray.print ();
 
     return 0;
 

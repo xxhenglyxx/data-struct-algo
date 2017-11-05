@@ -3,6 +3,7 @@
 #define ORDEREDARRAY_H
 
 #include <iostream>
+#include <type_traits>
 
 template < class T >
 class OrderedArray {
@@ -47,6 +48,7 @@ class OrderedArray {
 template < class T > OrderedArray< T >::OrderedArray ( const int size ) {
 
     this -> array = new T [ size ];
+
     this -> size = size;
     this -> lastIndex = -1;
     this -> length = 0;
@@ -62,7 +64,7 @@ template < class T > OrderedArray< T >::OrderedArray ( const OrderedArray< T > a
     this -> lastIndex = arr_length - 1;
     this -> length = arr_length;
     this -> nextValue = 0;
-
+ 
     this -> array = new T [ size ];
 
     for ( int i = 0; i < arr_length; i++ ) {
@@ -139,7 +141,21 @@ template < class T > const int OrderedArray< T >::getLength () const { return th
 
 template < class T > T OrderedArray< T >::insert ( const T element ) {
 
+    int searched_index = -1;
+
     if ( this -> lastIndex > this -> size ) throw std::string ( "OrderedArray is full" );
+
+    if ( this -> lastIndex != -1 ) searched_index = this -> search ( element );
+
+    if ( searched_index != -1 ) throw std::string ( "Ordered Array is a set which cannot have duplicate value" );
+
+    if ( this -> lastIndex != -1 && this -> array [ this -> lastIndex ] > element ) {
+
+        std::cout << "in hererer";
+
+        throw std::string ( "Next element cannot be smaller than previous element" );
+
+    }
 
     this -> lastIndex ++;
     this -> length ++;
