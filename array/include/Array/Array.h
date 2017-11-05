@@ -12,8 +12,8 @@ class Array {
         Array ( const int size );
         Array ( const Array< T > arr, const int size );
 
-        int getSize ();
-        int getLength ();
+        const int getSize () const;
+        const int getLength () const;
 
         T insert ( const T element );
         T insert ( const T element, const int index );
@@ -23,10 +23,11 @@ class Array {
         void removeAt ( const int index );
         T remove ( const T element, const bool multiple );
 
-        void clone ( T * arr, const int size );
-        void print ();
+        const void print () const;
 
-        T indexOf ( const int index );
+        const T indexOf ( const int index ) const;
+        const Array< int > getDuplicate ( const T element ) const;
+        const int getNonDuplicate ( const T element, const int occur_at ) const;
 
     private:
 
@@ -54,7 +55,7 @@ template < class T > Array< T >::Array ( const Array< T > arr, const int size ) 
     const int arr_length = arr.getLength ();
 
     this -> size = size;
-    this -> lastIndex = arr_length - 1;
+    this -> lastIndex = arr_length;
     this -> length = arr_length;
 
     this -> array = new T [ size ];
@@ -141,9 +142,9 @@ template < class T > T Array< T >::remove ( const T element, const bool multiple
 
 };
 
-template < class T > int Array< T >::getSize () { return this -> size; };
+template < class T > const int Array< T >::getSize () const { return this -> size; };
 
-template < class T > int Array< T >::getLength () { return this -> length; };
+template < class T > const int Array< T >::getLength () const { return this -> length; };
 
 template < class T > T Array< T >::insert ( const T element ) {
 
@@ -196,7 +197,7 @@ template < class T > T Array< T >::insert ( const T element, const int index ) {
 
 };
 
-template < class T > void Array< T >::print () {
+template < class T > const void Array< T >::print () const {
 
     if ( this -> length == 0 ) {
 
@@ -216,7 +217,7 @@ template < class T > void Array< T >::print () {
 
 };
 
-template < class T > T Array< T >::indexOf ( const int index ) {
+template < class T > const T Array< T >::indexOf ( const int index ) const {
 
     if ( index > this -> length ) {
 
@@ -227,6 +228,48 @@ template < class T > T Array< T >::indexOf ( const int index ) {
     }
     
     return this -> array [ index ];
+
+};
+
+template < class T > const Array< int > Array< T >::getDuplicate ( const T element ) const {
+
+    const int length = this -> length;
+
+    Array< int > element_indexes ( length );
+
+    for ( int i = 0; i < length; i ++ ) {
+
+        if ( this -> array [ i ] == element ) {
+
+            element_indexes.insert ( i );
+
+        }
+
+    }
+
+    return element_indexes;
+
+};
+
+template < class T > const int Array< T >::getNonDuplicate ( const T element, const int occur_at ) const {
+
+    int occur = 1;
+
+    for ( int i = 0; i < length; i ++ ) {
+
+        if ( this -> array [ i ] == element && occur == occur_at ) {
+
+            return i;
+
+        } else if ( this -> array [ i ] == element && occur != occur_at ) {
+
+            occur ++;
+
+        }
+
+    }
+
+    return -1;
 
 };
 
