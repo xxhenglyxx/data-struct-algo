@@ -29,12 +29,15 @@ class Array {
         const Array< int > getDuplicate ( const T element ) const;
         const int getNonDuplicate ( const T element, const int occur_at ) const;
 
+        const int next ();
+
     private:
 
         T * array;
         int size;
         int length;
         int lastIndex;
+        int nextValue;
 
         void _removeOne ( const T element );
         void _removeMultiple ( const T element );
@@ -47,6 +50,7 @@ template < class T > Array< T >::Array ( const int size ) {
     this -> size = size;
     this -> lastIndex = 0;
     this -> length = 0;
+    this -> nextValue = 0;
 
 };
 
@@ -57,6 +61,7 @@ template < class T > Array< T >::Array ( const Array< T > arr, const int size ) 
     this -> size = size;
     this -> lastIndex = arr_length;
     this -> length = arr_length;
+    this -> nextValue = 0;
 
     this -> array = new T [ size ];
 
@@ -270,6 +275,24 @@ template < class T > const int Array< T >::getNonDuplicate ( const T element, co
     }
 
     return -1;
+
+};
+
+template < class T > const int Array< T >::next () {
+
+    const T element = this -> array [ nextValue ];
+
+    if ( this -> nextValue < this -> length ) {
+
+        this -> nextValue ++;
+
+    } else if ( this -> nextValue < this -> length ) {
+
+        this -> nextValue = 0;
+
+    }
+
+    return element;
 
 };
 

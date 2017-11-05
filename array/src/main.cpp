@@ -83,6 +83,7 @@ int main ( int argc, char ** argv ) {
     std::cout << "Get duplicate and non duplicate by input" << std::endl;
 
     Array< int > duplicate_indexes = arr.getDuplicate ( 10 );
+
     duplicate_indexes.print ();
     std::cout << arr2.getNonDuplicate ( 'b', 4 ) << std::endl;
 
