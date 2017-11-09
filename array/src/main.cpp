@@ -87,6 +87,15 @@ int main ( int argc, char ** argv ) {
     duplicate_indexes.print ();
     std::cout << arr2.getNonDuplicate ( 'b', 4 ) << std::endl;
 
+    std::cout << "\ntesting string arrry" << std::endl;
+
+    Array< std::string > arr3 ( 10 );
+
+    arr3.insert ( "Hello" );
+    arr3.insert ( "Hello World I am Here" );
+
+    arr3.print ();
+
     return 0;
 
 }
