@@ -41,8 +41,6 @@ int main ( int argc, char * argv [] ) {
 
         arr.sort ();
 
-        arr.print ();
-
         run ++;
 
     }
