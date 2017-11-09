@@ -164,6 +164,18 @@ void SimpleArray< T >::_bubbleSort () {
 
     clock_t start = clock ();   // start the clock
 
+    /////////////////////////////////////////////
+    ///////////// PSEUDO CODE //////////////////
+    ///////////////////////////////////////////
+    /*
+        for every element in the array
+            for next element in the array, starts from current element
+                if current element > next element
+                    swap
+            repeat for every element ahead
+        repeat for every element ahead
+    */
+    
     for ( index = 0; index < size - 1; index ++ ) {
 
         swap = false;
