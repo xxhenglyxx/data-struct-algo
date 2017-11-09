@@ -1,6 +1,7 @@
 
 #include <iostream> // for input output
 #include <stdlib.h> // for rand
+#include <time.h>
 
 #include <SimpleArray/SimpleArray.h>
 
@@ -28,15 +29,19 @@ int main ( int argc, char * argv [] ) {
 
         SimpleArray < int > arr ( arr_size );
 
+        srand ( time ( 0 ) );
+
         for ( index = 0; index < arr_size; index ++ ) {
 
             negate = rand () % 2 == 0 ? -1 : 1;  // randomly negate number
 
-            arr.insert ( ( rand() % 100 ) * negate * 2 ); // range mod 100 to get range from 0 to 1
+            arr.insert ( ( rand() % ( index + 2 ) ) * negate * 2 ); // range mod 100 to get range from 0 to 1
 
         }
 
         arr.sort ();
+
+        arr.print ();
 
         run ++;
 
