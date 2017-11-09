@@ -7,4 +7,4 @@ Element multiply each testcase: 100
 
 Attach with image and excel file inside resources folder
 
-![Alt text] ( resources/benchmark/bubble-sort-benchmark.png?raw=true )
+![Bubble Sort Bench Mark] (https://raw.githubusercontent.com/xxhenglyxx/data-struct-algo/edit/master/bubble-sort-benchmark/resources/benchmark/bubble-sort-benchmark.png)
