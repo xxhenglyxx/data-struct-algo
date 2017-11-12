@@ -18,7 +18,7 @@ class SimpleArray {
 
         const T indexOf ( const int index ) const;
         const void print () const;
-        const T next () const;
+        const T next ();
 
         void sort ();
 
@@ -26,7 +26,7 @@ class SimpleArray {
         T * array;
         int size, length, lastIndex, nextValue;
 
-        void _bubbleSort ();
+        void _insertionSort ();
 
 };
 
@@ -105,7 +105,7 @@ T SimpleArray< T >::remove ( const T element ) {
 }
 
 template < class T >
-const T SimpleArray< T >::next () const {
+const T SimpleArray< T >::next () {
 
     const int index = this -> nextValue;
 
@@ -147,14 +147,14 @@ const void SimpleArray< T >::print () const {
 template < class T >
 void SimpleArray< T >::sort () {
 
-    this -> _bubbleSort ();
+    this -> _insertionSort ();
 
 };
 
 template < class T >
-void SimpleArray< T >::_bubbleSort () {
+void SimpleArray< T >::_insertionSort () {
 
-    int index, check_index, size = this -> length;
+    int index, index_behind, size = this -> length;
 
     bool swap;
 
@@ -169,34 +169,46 @@ void SimpleArray< T >::_bubbleSort () {
     ///////////////////////////////////////////
     /*
         for every element in the array
-            for every element in the array, index starting from 0 until size of array - index of element we in now - 1 ( taken from aheading one element)
-                if current element > next element
-                    swap
-            repeat for every element ahead
+            if current element > next element
+                swap
+                for every element behind
+                    if current swapped element < previous element
+                        swap
+                    repeat over
+                    else break
+            repeat over
         repeat for every element ahead
     */
-    
-    for ( index = 0; index < size - 1; index ++ ) { // loop all the way
 
-        swap = false;
+    for ( index = 0; index < size - 1; index ++ ) { // loop over the array
 
-        for ( check_index = 0; check_index < size - index - 1; check_index ++ ) { // array size - index of big loop - 1 ( subtracting from aheading one element of array )
+        if ( this -> array [ index ] > this -> array [ index + 1 ] ) { // if current element > next element
 
-            if ( this -> array [ check_index ] > this -> array [ check_index + 1 ] ) { // check if current index bigger than aheading index
+            temporary_store = this -> array [ index ]; // store current element temporary
 
-                temporary_store = this -> array [ check_index ]; // temporary store the smaller element
+            this -> array [ index ] = this -> array [ index + 1 ]; // mutate next element with current element
 
-                this -> array [ check_index ] = this -> array [ check_index + 1 ]; // swap current index to aheading element
+            this -> array [ index + 1 ] = temporary_store; // mutate next element with temporary stored element
 
-                this -> array [ check_index + 1 ] = temporary_store; // swap back the bigger element to aheading index
+            index_behind = index; // store current index to check backward
 
-                swap = true;
+            while ( index_behind != 0 ) { // cannot check the very first element
+
+                if ( this -> array [ index_behind ] < this -> array [ index_behind - 1 ] ) { // same logic above repeated
+
+                    temporary_store = this -> array [ index_behind ];
+
+                    this -> array [ index_behind ] = this -> array [ index_behind - 1 ];
+
+                    this -> array [ index_behind - 1 ] = temporary_store;
+
+                } else { break; }
+
+                index_behind --;
 
             }
 
         }
-
-        if ( !swap ) break;
 
     }
 
