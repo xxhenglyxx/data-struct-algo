@@ -7,4 +7,6 @@ Element multiply each testcase: 100
 
 Attach with image and excel file inside resources folder
 
-![Insertion Sort Bench Mark](/insertion-sort-benchmark/resources/benchmark/insertion-sort-benchmark.png)
+![Insertion Sort Bench Mark](resources/benchmark/insertion-sort-benchmark.png)
+
+![Insertion Sort FLow Chart](resources/insertion-sort.png)
