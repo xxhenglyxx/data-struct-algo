@@ -19,6 +19,7 @@ class Stack {
         T peek () const;
         bool isFull () const;
         bool isEmpty () const;
+        int size () const;
         
     private:
 
@@ -111,6 +112,14 @@ template < class T >
 bool Stack< T >::isFull () const {
 
     return this -> full;
+
+}
+
+template < class T >
+int Stack< T >::size () const {
+
+    // get numbers of element in stack
+    return this -> arrLength;
 
 }
 

@@ -13,6 +13,8 @@ int main ( int argc, char ** argv ) {
 
     std::cout << stack.peek () << std::endl;
 
+    std::cout << stack.size () << std::endl;
+
     return 0;
 
 }
