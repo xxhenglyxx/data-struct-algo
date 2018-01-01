@@ -45,11 +45,7 @@ int main ( int args_len, char ** args_context ) {
 
     unsigned int index = 0;
 
-    for ( ; index < 5; ++ index ) {
-
-        std::cout << str_arr [ index ] << std::endl;
-
-    }
+    for ( ; index < 5; ++ index ) std::cout << str_arr [ index ] << std::endl;
     
     return 0;
 
@@ -99,33 +95,41 @@ void ___arrayMerge (
 
 ) {
 
-    unsigned int index1 = 0, index2 = 0, right_arr_size = high - middle, loop_index = 0;
+    const unsigned int
+        left_arr_size = middle - low + 1,
+        right_arr_size = high - middle;
 
-    T * temp_left_arr = new T [ middle ], * temp_right_arr = new T [ right_arr_size ];
+    unsigned int index1 = 0, index2 = 0, loop_index = low;
 
-    while ( loop_index <= high ) {
+    T temp_left_arr [ left_arr_size ], temp_right_arr [ right_arr_size ];
 
-        loop_index < middle ?
-            temp_left_arr [ loop_index ] = arr [ loop_index ] : temp_right_arr [ loop_index ] = arr [ loop_index ];
+    for ( ; index1 < left_arr_size; ++ index1 )
+        temp_left_arr [ index1 ] = arr [ low + index1 ];
+
+    for ( ; index2 < right_arr_size; ++ index2 )
+        temp_right_arr [ index2 ] = arr [ middle + 1 + index2 ];
+    
+    index1 = 0, index2 = 0;
+
+    while ( index1 < left_arr_size && index2 < right_arr_size ) {
+
+        if ( temp_left_arr [ index1 ] <= temp_right_arr [ index2 ] ) {
+
+            arr [ loop_index ] = temp_left_arr [ index1 ];
+            ++ index1;
+
+        } else {
+
+            arr [ loop_index ] = temp_right_arr [ index2 ];
+            ++ index2;
+
+        }
 
         ++ loop_index;
- 
-    }
-
-    loop_index = 0;
-
-    while ( index1 < middle && index2 < right_arr_size ) {
-
-        temp_left_arr [ index1 ] <= temp_right_arr [ index2 ] ?
-            ( arr [ loop_index ] = temp_left_arr [ index1 ], ++ index1 )
-            :
-            ( arr [ loop_index ] = temp_right_arr [ index2 ], ++ index2 );
-
-        ++ loop_index;
 
     }
 
-    while ( index1 < middle ) {
+    while ( index1 < left_arr_size ) {
 
         arr [ loop_index ] = temp_left_arr [ index1 ];
         ++ index1;
@@ -140,9 +144,6 @@ void ___arrayMerge (
         ++ loop_index;
 
     }
-
-    delete [] temp_left_arr;
-    delete [] temp_right_arr;
 
 };
 
