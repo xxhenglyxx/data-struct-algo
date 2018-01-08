@@ -52,9 +52,9 @@ void arrayInsertionSort ( T ( &arr ) [ size ] ) {
 };
 
 template < typename T, std::size_t size >
-unsigned int medianOfThree ( T ( &arr ) [ size ], unsign_int start, unsign_int end ) {
+int medianOfThree ( T ( &arr ) [ size ], unsign_int start, unsign_int end ) {
 
-    const unsigned int middle = size / 2;
+    const int middle = size / 2;
 
     if ( arr [ start ] <= arr [ middle ] ) {
 
@@ -78,8 +78,8 @@ template < typename T, std::size_t size >
 unsigned int arrayPartition ( T ( &arr ) [ size ], unsign_int start, unsign_int end ) {
 
     // modify or uncomment below to use first pivot, last pivot or median
-    unsign_int pivot_index = end;
-    // unsign_int pivot_index = medianOfThree ( arr, start, end );
+    // unsign_int pivot_index = end;
+    unsign_int pivot_index = medianOfThree ( arr, start, end );
 
     const T pivot = arr [ pivot_index ];
     unsigned int loop_index = 0, swap_index = 0;

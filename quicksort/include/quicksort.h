@@ -1,6 +1,4 @@
 
-#include <iostream>
-
 #ifndef QUICK_SORT_H
 #define QUICK_SORT_H
 
@@ -31,7 +29,7 @@ extern unsigned int arrayPartition (
 );
 
 template < typename T, std::size_t size >
-extern unsigned int medianOfThree ( T ( &arr ) [ size ], unsign_int start, unsign_int end );
+extern int medianOfThree ( T ( &arr ) [ size ], unsign_int start, unsign_int end );
 
 #include "../src/quicksort.cpp"
 
