@@ -32,6 +32,20 @@ namespace NonStd {
     };
 
     template < typename K, typename T >
+    void HashEntry< K, T >::setKey ( const K key ) {
+
+        this -> key = key;
+
+    };
+
+    template < typename K, typename T >
+    void HashEntry< K, T >::setValue ( const T value ) {
+
+        this -> value = value;
+
+    };
+
+    template < typename K, typename T >
     void HashEntry< K, T >::setRemoved ( const bool state ) {
 
         this -> removed = state;
@@ -69,22 +83,26 @@ namespace NonStd {
 
     };
 
+    // method not generic yet
     template < typename K, typename T >
-    int HashTable< K, T >::elementToASCII ( const K key ) {
+    int HashTable< K, T >::elementToASCII ( const K key ) const {
 
         int value = 0;
 
-        if ( std::is_same< K, std::string >::value ) {
+        if ( std::is_arithmetic < K >::value ) {
+
+            // just placeholder
+            value = 5;
+
+        } else {
+
+            // for std::string
 
             for ( char character : key ) {
 
                 value += int ( character );
 
             }
-
-        } else {
-
-            value = key;
 
         }
 
@@ -93,7 +111,7 @@ namespace NonStd {
     };
     
     template < typename K, typename T >
-    int HashTable< K, T >::hashFunction ( const K key ) {
+    int HashTable< K, T >::hashFunction ( const K key ) const {
 
         return this -> elementToASCII ( key ) % this -> size;
 
@@ -113,7 +131,21 @@ namespace NonStd {
 
         int hash_key = this -> hashFunction ( key );
 
-        return this -> array [ hash_key ].value;
+        return this -> array [ hash_key ].getValue ();
+
+    };
+
+    template < typename K, typename T >
+    int HashTable< K, T >::getLength () const {
+
+        return this -> length;
+
+    };
+
+    template < typename K, typename T >
+    int HashTable< K, T >::getSize () const {
+
+        return this -> size;
 
     };
 
@@ -129,17 +161,20 @@ namespace NonStd {
         }
 
         int index = this -> hashFunction ( key );
-        const HashTable < K, T > ( & hash ) = this -> array;
+        // const HashTable < K, T > ( & hash ) = this -> array;
 
-        while ( this -> isExist ( key ) && hash [ index ] && hash [ index ].removed ) {
+        if ( this -> isExist ( key ) ) {
 
-            ++ index;
+            // linear probing
+            while ( !this -> array [ index ].isRemoved () ) {
+
+                ++ index;
+
+            }
 
         }
 
-        hash [ index ].setKey ( key );
-        hash [ index ].setValue ( value );
-        hash [ index ].setRemoved ( false );
+        this -> array [ index ] = HashEntry < K, T > ( key, value );
 
         ++ this -> length;
 
@@ -148,10 +183,14 @@ namespace NonStd {
     template < typename K, typename T >
     void HashTable< K, T >::removeByKey ( const K key ) {
 
+        -- this -> length;
+
     };
 
     template < typename K, typename T >
     void HashTable< K, T >::removeByElement ( const T element ) {
+
+        -- this -> length;
 
     };
 

@@ -40,8 +40,8 @@ namespace NonStd {
             HashEntry < K, T > * array;
             int size, length;
 
-            int hashFunction ( const K key );
-            int elementToASCII ( const K key );
+            int hashFunction ( const K key ) const;
+            int elementToASCII ( const K key ) const;
 
         public:
 
