@@ -8,7 +8,7 @@ namespace NonStd {
     : key ( key ), value ( value ), removed ( false ) {};
 
     template < typename K, typename T >
-    HashEntry< K, T >::HashEntry () : removed ( false ) {};
+    HashEntry< K, T >::HashEntry () : removed ( true ) {};
 
     template < typename K, typename T >
     T HashEntry< K, T >::getValue () const {
@@ -53,17 +53,16 @@ namespace NonStd {
     };
 
     template < typename K, typename T >
-    HashTable< K, T >::HashTable ( const int size ) : size ( size ), length ( 0 ) {
-
-        this -> array = new HashEntry < K, T > [ size ] ();
-
-    };
+    HashTable< K, T >::HashTable ( const int size )
+    : size ( size ), length ( 0 ), array ( new HashEntry < K, T > [ size ] ) {};
 
     template < typename K, typename T >
     HashTable< K, T >::HashTable ( const HashTable < K, T > & hashTable, const int size )
     : size ( size ), array ( new HashEntry < K, T > [ size ] ) {
 
         unsigned int index = 0;
+
+        this -> length = hashTable -> getLength ();
 
         for ( ; index < hashTable -> getSize (); ++ index ) {
 
@@ -127,9 +126,43 @@ namespace NonStd {
     };
 
     template < typename K, typename T >
-    T HashTable< K, T >::getElement ( const K key ) const {
+    T HashTable< K, T >::getElement ( const K key, const int occurence ) const {
 
         int hash_key = this -> hashFunction ( key );
+
+        if ( occurence > 1 ) {
+
+            int index = hash_key + 1;
+            int occur = 2;
+            const int & len = this -> length;
+
+            while ( index != hash_key ) {
+
+                if ( !this -> array [ index ].isRemoved () && this -> array [ index ].getKey () == key ) {
+
+                    if ( occur == occurence ) {
+
+                        return this -> array [ index ].getValue ();
+
+                    } else {
+
+                        ++ occur;
+
+                    }
+
+                }
+
+                if ( index == len ) {
+
+                    index = 0;
+
+                }
+
+                ++ index;
+
+            }
+
+        }
 
         return this -> array [ hash_key ].getValue ();
 
@@ -163,14 +196,10 @@ namespace NonStd {
         int index = this -> hashFunction ( key );
         // const HashTable < K, T > ( & hash ) = this -> array;
 
-        if ( this -> isExist ( key ) ) {
+        // linear probing
+        while ( !this -> array [ index ].isRemoved () ) {
 
-            // linear probing
-            while ( !this -> array [ index ].isRemoved () ) {
-
-                ++ index;
-
-            }
+            ++ index;
 
         }
 

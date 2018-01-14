@@ -54,7 +54,7 @@ namespace NonStd {
 
             int getLength () const;
             int getSize () const;
-            T getElement ( const K key ) const;
+            T getElement ( const K key, const int occurence = 1 ) const;
             int getKey ( const T element ) const;
             bool isExist ( const K key ) const;
 
