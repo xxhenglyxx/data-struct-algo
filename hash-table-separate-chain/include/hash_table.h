@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <type_traits>
+#include <list>
 
 #ifndef HASH_TABLE_H
 #define HASH_TABLE_H
@@ -13,7 +14,7 @@ namespace NonStd {
         private:
 
             K key;
-            T value;
+            std::list < T > value;
             bool removed;
 
         public:
@@ -22,11 +23,11 @@ namespace NonStd {
             HashEntry ();
             // ~HashEntry ();
 
-            void setValue ( const T value );
+            void setValue ( const std::list < T > value );
             void setKey ( const K key );
             void setRemoved ( const bool state );
 
-            T getValue () const;
+            std::list < T > getValue ();
             K getKey () const;
             bool isRemoved () const;
 
@@ -42,9 +43,6 @@ namespace NonStd {
 
             int hashFunction ( const K key ) const;
             int elementToASCII ( const K key ) const;
-
-            void quadraticHash ( int & start_index );
-            void doubleHash ( int & start_index );
 
         public:
 

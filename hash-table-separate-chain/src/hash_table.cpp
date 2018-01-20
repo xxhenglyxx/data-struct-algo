@@ -5,13 +5,17 @@ namespace NonStd {
 
     template < typename K, typename T >
     HashEntry< K, T >::HashEntry ( const K key, const T value )
-    : key ( key ), value ( value ), removed ( false ) {};
+    : key ( key ), removed ( false ) {
+
+        this -> value.push_back ( value );
+
+    };
 
     template < typename K, typename T >
     HashEntry< K, T >::HashEntry () : removed ( true ) {};
 
     template < typename K, typename T >
-    T HashEntry< K, T >::getValue () const {
+    std::list < T > HashEntry< K, T >::getValue () {
 
         return this -> value;
 
@@ -39,7 +43,7 @@ namespace NonStd {
     };
 
     template < typename K, typename T >
-    void HashEntry< K, T >::setValue ( const T value ) {
+    void HashEntry< K, T >::setValue ( const std::list < T > value ) {
 
         this -> value = value;
 
@@ -54,7 +58,17 @@ namespace NonStd {
 
     template < typename K, typename T >
     HashTable< K, T >::HashTable ( const int size )
-    : size ( size ), length ( 0 ), array ( new HashEntry < K, T > [ size ] ) {};
+    : size ( size ), length ( 0 ), array ( new HashEntry < K, T > [ size ] ) {
+
+        unsigned int index = 0;
+
+        // for ( ; index < size; ++ index ) {
+
+        //     this -> array [ index ] = HashEntry < K, T > ();
+
+        // }
+
+    };
 
     template < typename K, typename T >
     HashTable< K, T >::HashTable ( const HashTable < K, T > & hashTable, const int size )
@@ -95,8 +109,7 @@ namespace NonStd {
 
         } else {
 
-            // for std::string
-
+            // for string
             for ( char character : key ) {
 
                 value += static_cast< int > ( character );
@@ -129,44 +142,21 @@ namespace NonStd {
     T HashTable< K, T >::getElement ( const K key, const int occurence ) const {
 
         int hash_key = this -> hashFunction ( key );
+        int occur = 1;
 
-        if ( occurence > 1 ) {
+        const std::list < T > values = this -> array [ hash_key ].getValue ();
 
-            unsigned int occur = 1;
-            // unsigned int index = hash_key;
-            // const int & size = this -> size;
+        for ( T value : values ) {
 
-            // while ( occur != occurence ) {
+            if ( occur == occurence ) {
 
-            //     if ( this -> array [ index ].getKey () == key ) {
-
-            //         if ( occur == occurence ) {
-
-            //             return this -> array [ index ].getValue ();
-
-            //         } else {
-
-            //             ++ occur;
-
-            //         }
-
-            //     }
-
-            //     index > size - 1 ? index = 0 : ++ index;
-
-            // }
-
-            while ( occur != occurence ) {
-
-                this -> quadraticHash ( hash_key );
-
-                ++ occur;
-
+                return value;
+    
             }
 
-        }
+            ++ occur;
 
-        return this -> array [ hash_key ].getValue ();
+        }
 
     };
 
@@ -185,22 +175,6 @@ namespace NonStd {
     };
 
     template < typename K, typename T >
-    void HashTable< K, T >::quadraticHash ( int & start_index ) {
-
-        int counter = 0;
-        int & index = start_index;
-
-        while ( !this -> array [ index ].isRemoved () && counter != this -> size ) {
-
-            ++ counter;
-
-            index = ( index + counter * counter ) / this -> size;
-
-        }
-
-    };
-
-    template < typename K, typename T >
     void HashTable< K, T >::insert ( const K key, const T value ) {
 
         if ( this -> size == this -> length ) {
@@ -212,22 +186,20 @@ namespace NonStd {
         }
 
         int index = this -> hashFunction ( key );
-        // const HashTable < K, T > ( & hash ) = this -> array;
-
-        // linear probing
-        // while ( !this -> array [ index ].isRemoved () ) {
-
-        //     ++ index;
-
-        // }
 
         if ( !this -> array [ index ].isRemoved () ) {
 
-            this -> quadraticHash ( index );
+            std::list < T > arr = this -> array [ index ].getValue ();
+
+            arr.push_back ( value );
+
+            this -> array [ index ].setValue ( arr );
+
+        } else {
+
+            this -> array [ index ] = HashEntry < K, T > ( key, value );
 
         }
-
-        this -> array [ index ] = HashEntry < K, T > ( key, value );
 
         ++ this -> length;
 
