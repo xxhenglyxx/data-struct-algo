@@ -41,10 +41,10 @@ namespace NonStd {
             int size, length;
 
             int hashFunction ( const K key ) const;
+            int hashFunction2 ( const K key ) const;
             int elementToASCII ( const K key ) const;
 
             void quadraticHash ( int & start_index );
-            void hashFunction2 ( int & start_index );
 
         public:
 

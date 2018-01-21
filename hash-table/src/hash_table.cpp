@@ -204,9 +204,9 @@ namespace NonStd {
     };
 
     template < typename K, typename T >
-    void HashTable< K, T >::hashFunction2 ( int & start_index ) {
+    int HashTable< K, T >::hashFunction2 ( const K key ) const {
 
-        
+        return ( this -> elementToASCII ( key ) * this -> size - 1 ) % this -> size;
 
     };
 
@@ -222,7 +222,7 @@ namespace NonStd {
         }
 
         int index = this -> hashFunction ( key );
-        // const HashTable < K, T > ( & hash ) = this -> array;
+        int step_size = this -> hashFunction2 ( key );
 
         // linear probing
         // while ( !this -> array [ index ].isRemoved () ) {
@@ -231,9 +231,17 @@ namespace NonStd {
 
         // }
 
-        if ( !this -> array [ index ].isRemoved () ) {
+        // quadratic probing
+        // if ( !this -> array [ index ].isRemoved () ) {
 
-            this -> quadraticHash ( index );
+        //     this -> quadraticHash ( index );
+
+        // }
+
+        while ( !this -> array [ index ].isRemoved () ) {
+
+            index = index + step_size;
+            index = index % this -> size;
 
         }
 
