@@ -60,7 +60,7 @@ namespace NonStd {
             bool isExist ( const K key ) const;
 
             void insert ( const K key, const T element );
-            void removeByElement ( const T element );
+            // void removeByElement ( const T element );
             void removeByKey ( const K key );
 
     };

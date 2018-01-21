@@ -62,11 +62,11 @@ namespace NonStd {
 
         unsigned int index = 0;
 
-        // for ( ; index < size; ++ index ) {
+        for ( ; index < size; ++ index ) {
 
-        //     this -> array [ index ] = HashEntry < K, T > ();
+            this -> array [ index ] = HashEntry < K, T > ();
 
-        // }
+        }
 
     };
 
@@ -205,18 +205,20 @@ namespace NonStd {
 
     };
 
-    template < typename K, typename T >
-    void HashTable< K, T >::removeByKey ( const K key ) {
+    // template < typename K, typename T >
+    // void HashTable< K, T >::removeByKey ( const K key, const  ) {
 
-        -- this -> length;
+    //     // int hash_key = this -> hashFunction ( key );
 
-    };
+    //     -- this -> length;
 
-    template < typename K, typename T >
-    void HashTable< K, T >::removeByElement ( const T element ) {
+    // };
 
-        -- this -> length;
+    // template < typename K, typename T >
+    // void HashTable< K, T >::removeByElement ( const T element ) {
 
-    };
+    //     -- this -> length;
+
+    // };
 
 };
