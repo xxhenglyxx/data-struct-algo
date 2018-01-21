@@ -3,6 +3,7 @@
 
 #define MAX_SIZE 200
 #define BREAKLINE std::cout << "----------------------\n"
+#define FIXEDLOG std::cout << "intentionally make collision\n"
 
 int main ( int args_len, char ** args_context ) {
 
@@ -15,6 +16,10 @@ int main ( int args_len, char ** args_context ) {
     myHash -> insert ( "Baby", 42.42 );
     myHash -> insert ( "Lisa", 77.12 );
     myHash -> insert ( "Baby", 123.123 );
+
+    // myHash -> removeByKey ( "Baby", 3 );
+
+    FIXEDLOG;
 
     std::cout << "Lisa Existence: " << myHash -> isExist ( "Lisa" ) << std::endl;
     std::cout << "Baby Existence: " << myHash -> isExist ( "Baby" ) << std::endl;

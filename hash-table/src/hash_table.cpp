@@ -54,7 +54,15 @@ namespace NonStd {
 
     template < typename K, typename T >
     HashTable< K, T >::HashTable ( const int size )
-    : size ( size ), length ( 0 ), array ( new HashEntry < K, T > [ size ] ) {};
+    : size ( size ), length ( 0 ), array ( new HashEntry < K, T > [ size ] ) {
+
+        unsigned int index = 0;
+
+        for ( ; index < size; ++ index )
+
+            this -> array [ index ] = HashEntry < K, T > ();
+
+    };
 
     template < typename K, typename T >
     HashTable< K, T >::HashTable ( const HashTable < K, T > & hashTable, const int size )
@@ -132,35 +140,30 @@ namespace NonStd {
 
         if ( occurence > 1 ) {
 
-            unsigned int occur = 1;
-            // unsigned int index = hash_key;
-            // const int & size = this -> size;
-
-            // while ( occur != occurence ) {
-
-            //     if ( this -> array [ index ].getKey () == key ) {
-
-            //         if ( occur == occurence ) {
-
-            //             return this -> array [ index ].getValue ();
-
-            //         } else {
-
-            //             ++ occur;
-
-            //         }
-
-            //     }
-
-            //     index > size - 1 ? index = 0 : ++ index;
-
-            // }
+            unsigned occur = 1;
+            ++ hash_key;
 
             while ( occur != occurence ) {
 
-                this -> quadraticHash ( hash_key );
+                if ( !this -> array [ hash_key ].isRemoved () && this -> array [ hash_key ].getKey () == key ) {
 
-                ++ occur;
+                    ++ occur;
+
+                    if ( occur == occurence ) {
+
+                        return this -> array [ hash_key ].getValue ();
+
+                    }
+
+                }
+
+                ++ hash_key;
+
+                if ( hash_key > this -> size ) {
+
+                    hash_key = 0;
+
+                }
 
             }
 
@@ -201,6 +204,13 @@ namespace NonStd {
     };
 
     template < typename K, typename T >
+    void HashTable< K, T >::hashFunction2 ( int & start_index ) {
+
+        
+
+    };
+
+    template < typename K, typename T >
     void HashTable< K, T >::insert ( const K key, const T value ) {
 
         if ( this -> size == this -> length ) {
@@ -234,16 +244,54 @@ namespace NonStd {
     };
 
     template < typename K, typename T >
-    void HashTable< K, T >::removeByKey ( const K key ) {
+    void HashTable< K, T >::removeByKey ( const K key, const int occurence ) {
 
-        -- this -> length;
+        int hash_key = this -> hashFunction ( key );
 
-    };
+        if ( occurence > 1 ) {
 
-    template < typename K, typename T >
-    void HashTable< K, T >::removeByElement ( const T element ) {
+            unsigned occur = 1;
+            ++ hash_key;
 
-        -- this -> length;
+            while ( occur != occurence ) {
+
+                if ( !this -> array [ hash_key ].isRemoved () && this -> array [ hash_key ].getKey () == key ) {
+
+                    ++ occur;
+
+                    if ( occur == occurence ) {
+
+                        -- this -> length;
+
+                        this -> array [ hash_key ].setRemoved ( true );
+
+                        return;
+
+                    }
+
+                }
+
+                ++ hash_key;
+
+                if ( hash_key > this -> size ) {
+
+                    hash_key = 0;
+
+                }
+
+            }
+
+            return;
+
+        }
+
+        if ( !this -> array [ hash_key ].isRemoved () ) {
+
+            this -> array [ hash_key ].setRemoved ( true );
+
+            -- this -> length;
+
+        }
 
     };
 

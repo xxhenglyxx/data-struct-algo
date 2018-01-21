@@ -44,7 +44,7 @@ namespace NonStd {
             int elementToASCII ( const K key ) const;
 
             void quadraticHash ( int & start_index );
-            void doubleHash ( int & start_index );
+            void hashFunction2 ( int & start_index );
 
         public:
 
@@ -62,8 +62,8 @@ namespace NonStd {
             bool isExist ( const K key ) const;
 
             void insert ( const K key, const T element );
-            void removeByElement ( const T element );
-            void removeByKey ( const K key );
+            // void removeByElement ( const T element );
+            void removeByKey ( const K key, const int occurence = 1 );
 
     };
 
