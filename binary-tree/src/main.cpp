@@ -18,13 +18,6 @@ int main ( int args_len, char ** args_context ) {
     tree.insert ( -1 );
     tree.insert ( 3 );
 
-    log ( tree.find ( 55 ) );
-    log ( tree.find ( -2 ) );
-    log ( tree.find ( 2 ) );
-    log ( tree.find ( -1 ) );
-    log ( tree.find ( 3 ) );
-    log ( tree.find ( 99 ) );
-
     return 0;
 
 };

@@ -107,6 +107,29 @@ namespace NonStd {
     };
 
     template < typename T >
+    void BinaryTree< T >::deepTransversal ( TreeNode < T > * node ) {
+
+        if ( node ) {
+
+            if ( node -> getLeftChild () ) {
+
+                node = node -> getLeftChild ();
+
+                this -> deepTransversal ( node );
+
+            } else if ( node -> getRightChild () ) {
+
+                node = node -> getRightChild ();
+
+                this -> deepTransversal ( node );
+
+            }
+
+        }
+
+    };
+
+    template < typename T >
     void BinaryTree< T >::insert ( const T element ) {
 
         if ( !this -> root ) {
@@ -155,7 +178,36 @@ namespace NonStd {
     template < typename T >
     void BinaryTree< T >::remove ( const T element ) {
 
-        -- this -> size;
+        TreeNode < T > * tree = this -> root;
+        TreeNode < T > * temp;
+        T * data = nullptr;
+        bool transverse_right = true;
+
+        while ( tree ) {
+
+            data = tree -> getData ();
+
+            if ( *data == element ) {
+
+                temp = tree;
+                
+                tree -> disposeObject ();
+
+                -- this -> size;
+
+            } else if ( *data >= element ) {
+
+                tree = tree -> getLeftChild ();
+                transverse_right = false;
+
+            } else if ( *data < element ) {
+
+                tree = tree -> getRightChild ();
+                transverse_right = true;
+
+            }
+
+        }
 
     };
 

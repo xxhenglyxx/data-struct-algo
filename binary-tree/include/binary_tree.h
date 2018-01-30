@@ -15,6 +15,7 @@ namespace NonStd {
             T data;
 
             void disposeObject ();
+            void deepTransversal ( TreeNode < T > * node );
 
         public:
 
