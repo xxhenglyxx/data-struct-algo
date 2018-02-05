@@ -33,6 +33,8 @@ namespace NonStd {
         delete this -> right;
         delete this -> parent;
 
+        // std::cout << "Node Destroyed" << std::endl;
+
     };
 
     template < typename T >
@@ -97,6 +99,8 @@ namespace NonStd {
 
         delete this -> root;
 
+        // std::cout << "Tree Destroyed" << std::endl;
+
     };
 
     template < typename T >
@@ -107,7 +111,7 @@ namespace NonStd {
     };
 
     template < typename T >
-    void BinaryTree< T >::deepTransversal ( TreeNode < T > * node ) {
+    void BinaryTree< T >::deepTransversal ( TreeNode < T > & node ) {
 
         if ( node ) {
 

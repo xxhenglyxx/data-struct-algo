@@ -15,7 +15,6 @@ namespace NonStd {
             T data;
 
             void disposeObject ();
-            void deepTransversal ( TreeNode < T > * node );
 
         public:
 
@@ -42,6 +41,8 @@ namespace NonStd {
 
             TreeNode < T > * root;
             std::size_t size;
+
+            void deepTransversal ( TreeNode < T > & node );
 
         public:
 
