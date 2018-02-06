@@ -86,10 +86,24 @@ namespace NonStd {
     template < typename T >
     void RedBlackTree< T >::rightRotate ( TreeNode * node ) {
 
-        node -> parent -> parent = node;
-        node -> parent -> changeColor ();
-        node -> parent -> left = std::move ( node -> right );
+        if ( !node -> parent -> parent ) {
 
+            node -> parent -> parent = node;
+            node -> parent -> changeColor ();
+            node -> parent -> left = std::move ( node -> right );
+            this -> root.reset ( node );
+            this -> root -> parent = nullptr;
+
+
+        } else {
+
+            node -> parent -> parent = node;
+            node -> parent -> left = std::move ( node -> right );
+            node -> parent -> changeColor ();
+
+        }
+
+        // node -> parent -> left = std::move ( node -> right );
         node -> changeColor ();
 
     };
@@ -97,9 +111,21 @@ namespace NonStd {
     template < typename T >
     void RedBlackTree< T >::leftRotate ( TreeNode * node ) {
 
-        node -> parent -> parent = node;
-        node -> parent -> changeColor ();
-        node -> parent -> right = std::move ( node -> left );
+        if ( !node -> parent -> parent ) {
+
+            node -> parent -> parent = node;
+            node -> parent -> changeColor ();
+            node -> left.reset( node -> parent -> parent );
+            node -> parent = nullptr;
+            this -> root.reset ( node );
+
+        } else {
+
+            node -> parent -> parent = node;
+            node -> parent -> changeColor ();
+            // node -> parent -> right = std::move ( node -> left );
+
+        }
 
         node -> changeColor ();
 
