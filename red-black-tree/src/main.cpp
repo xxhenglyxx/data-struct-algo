@@ -11,15 +11,18 @@ int main ( int args_len, char ** args_context ) {
 
     std::ios::sync_with_stdio( false );
 
-    NonStd::RedBlackTree < int > tree ( 1 );
+    NonStd::RedBlackTree < int > tree ( 5 );
 
-    tree.add ( 2 );
     tree.add ( 3 );
-    tree.add ( 5 );
+    tree.add ( 2 );
+    tree.add ( 1 );
 
     std::cout << std::boolalpha;
 
-    std::cout << tree.find ( 3 );
+    std::cout << tree.find ( 3 ) << std::endl;
+    std::cout << tree.find ( 2 ) << std::endl;
+    std::cout << tree.find ( 5 ) << std::endl;
+    std::cout << tree.find ( 1 ) << std::endl;
 
     return 0;
 

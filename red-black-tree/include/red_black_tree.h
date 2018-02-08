@@ -25,8 +25,8 @@ namespace NonStd {
             TreeNode (
                 
                 T data,
-                uniqueTN left,
-                uniqueTN right
+                uniqueTN & left,
+                uniqueTN & right
                 
             ) :
             data ( data ),

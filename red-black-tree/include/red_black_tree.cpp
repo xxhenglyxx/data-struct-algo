@@ -88,18 +88,24 @@ namespace NonStd {
 
         if ( !node -> parent -> parent ) {
 
+            uniqueTN rightNode = std::make_unique < TreeNode > ( node -> parent -> data );
+            rightNode -> right = std::move ( node -> parent -> right );
+            rightNode -> left = std::move ( node -> right );
+
             node -> parent -> parent = node;
             node -> parent -> changeColor ();
-            node -> parent -> left = std::move ( node -> right );
-            this -> root.reset ( node );
+            this -> root = std::move ( node -> parent -> left );
+
+            this -> root -> right = std::move ( rightNode );
+
             this -> root -> parent = nullptr;
 
 
         } else {
 
             node -> parent -> parent = node;
-            node -> parent -> left = std::move ( node -> right );
             node -> parent -> changeColor ();
+            node -> parent -> left = std::move ( node -> right );
 
         }
 
@@ -113,17 +119,23 @@ namespace NonStd {
 
         if ( !node -> parent -> parent ) {
 
+            uniqueTN leftNode = std::make_unique < TreeNode > ( node -> parent -> data );
+            leftNode -> left = std::move ( node -> parent -> left );
+            leftNode -> right = std::move ( node -> left );
+
             node -> parent -> parent = node;
             node -> parent -> changeColor ();
-            node -> left.reset( node -> parent -> parent );
-            node -> parent = nullptr;
-            this -> root.reset ( node );
+            this -> root = std::move ( node -> parent -> right );
+
+            this -> root -> left = std::move ( leftNode );
+
+            this -> root -> parent = nullptr;
 
         } else {
 
             node -> parent -> parent = node;
             node -> parent -> changeColor ();
-            // node -> parent -> right = std::move ( node -> left );
+            node -> parent -> right = std::move ( node -> left );
 
         }
 
@@ -200,8 +212,8 @@ namespace NonStd {
 
             } else {
 
-                prev -> right = std::move ( node );
-                prev -> right -> parent = prev;
+                prev -> left = std::move ( node );
+                prev -> left -> parent = prev;
 
                 this -> validateTree ( prev, true );
 
