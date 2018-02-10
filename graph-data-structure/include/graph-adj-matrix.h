@@ -1,8 +1,9 @@
 
 #include <iostream>
+#include <stack>
 
-#ifndef GRAPH_H
-#define GRAPH_H
+#ifndef GRAPH_ADJ_MATRIX_H
+#define GRAPH_ADJ_MATRIX_H
 
 template < typename T >
 void log ( const T text ) {
@@ -41,14 +42,15 @@ class Graph {
 
     struct Edge {
 
-        T * start_vertex, * end_vertex;
+        int start_vertex, end_vertex;
         int weight;
         bool is_removed;
 
-        Edge () : start_vertex ( nullptr ), end_vertex ( nullptr ), weight ( 0 ), is_removed ( true ) {};
+        Edge () : weight ( 0 ), is_removed ( true ) {};
 
     };
 
+    // should have use hash table to improve performance for vertices
     struct Vertex {
 
         T data;
@@ -75,14 +77,70 @@ class Graph {
         void addVertex ( const T vertex );
         void removeVertex ( const T vertex );
         int findVertex ( const T vertex ) const;
+        T getVertex ( const std::size_t index ) const;
 
         void addEdge ( const T vertex1, const T vertex2 );
         void removeEdge ( const T vertex1, const T vertex2 );
+
+        void depthFirstSearch () const;
+        void breathFirstSearch () const;
 
 };
 
 template < typename T, int V, GraphType G >
 Graph< T, V, G >::Graph () : vertices_last_index ( 0 ), edges_last_index ( 0 ), vertices_length ( 0 ) {
+};
+
+template < typename T, int V, GraphType G >
+void Graph< T, V, G >::depthFirstSearch () const {
+
+    std::stack < int > visited;
+    int index = 0;
+    std::size_t visited_length = 0;
+    const Edge ( & edges ) [ G == GraphType::UNDIGRAPH ? V - 1 : V * ( V - 1 ) / 2 ] = this -> Edges;
+    const Vertex ( & vertices ) [ V ] = this -> Vertices;
+
+    while ( visited_length != this -> size ) {
+
+        if ( visited.size () ) {
+
+            if ( visited.top () == edges [ index ].start_vertex ) {
+                
+                visited.pop ();
+
+                index = edges [ visited.top () ].end_vertex;
+
+            } else {
+
+                visited.push ( edges [ index ].start_vertex );
+
+                log ( vertices [ index ].data );
+
+                index = edges [ index ].start_vertex;
+                ++ visited_length;
+
+            }
+
+        } else {
+
+            visited.push ( edges [ index ].start_vertex );
+
+            log ( vertices [ index ].data );
+
+            index = edges [ index ].start_vertex;
+            ++ visited_length;
+
+        }
+
+    }
+
+};
+
+template < typename T, int V, GraphType G >
+void Graph< T, V, G >::breathFirstSearch () const {
+
+
+
 };
 
 template < typename T, int V, GraphType G >
@@ -136,21 +194,35 @@ int Graph< T, V, G >::findVertex ( const T vertex ) const {
 template < typename T, int V, GraphType G >
 void Graph< T, V, G >::addEdge ( const T vertex1, const T vertex2 ) {
 
-    const int v1 = this -> findVertex ( vertex1 );
-    const int v2 = this -> findVertex ( vertex2 );
+    int v1 = this -> findVertex ( vertex1 );
+    int v2 = this -> findVertex ( vertex2 );
 
-    if ( v1 == -1 || v2 == -1 ) {
+    if ( v1 < 0 ) {
 
-        log ( "Either one or both vertices not exist" );
+        if ( this -> vertices_last_index == this -> size - 1 ) {
 
-        return;
+            log ( "Error: Vertex Array is Fulled" );
+            return;
+
+        }
+
+        this -> addVertex ( vertex1 );
 
     }
 
+    if ( v2 < 0 ) {
+
+        this -> addVertex ( vertex2 );
+
+    }
+
+    v1 = this -> findVertex ( vertex1 );
+    v2 = this -> findVertex ( vertex2 );
+
     if ( this -> edges_length == 0 ) {
 
-        this -> Edges [ this -> edges_last_index ].start_vertex = & this -> Vertices [ v1 ].data;
-        this -> Edges [ this -> edges_last_index ].end_vertex = & this -> Vertices [ v2 ].data;
+        this -> Edges [ this -> edges_last_index ].start_vertex = v1;
+        this -> Edges [ this -> edges_last_index ].end_vertex = v2;
         this -> Edges [ this -> edges_last_index ].is_removed = false;
 
         ++ this -> edges_length;
@@ -162,8 +234,8 @@ void Graph< T, V, G >::addEdge ( const T vertex1, const T vertex2 ) {
     ++ this -> edges_last_index;
     ++ this -> edges_length;
 
-    this -> Edges [ this -> edges_last_index ].start_vertex = & this -> Vertices [ v1 ].data;
-    this -> Edges [ this -> edges_last_index ].end_vertex = & this -> Vertices [ v2 ].data;
+    this -> Edges [ this -> edges_last_index ].start_vertex = v1;
+    this -> Edges [ this -> edges_last_index ].end_vertex = v2;
     this -> Edges [ this -> edges_last_index ].is_removed = false;
 
 };
