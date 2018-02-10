@@ -2,6 +2,8 @@
 #include <iostream>
 #include <stack>
 
+// should use static polyporphism to handle representations of Graph for both performance and reusability
+
 #ifndef GRAPH_ADJ_MATRIX_H
 #define GRAPH_ADJ_MATRIX_H
 
@@ -88,7 +90,7 @@ class Graph {
 };
 
 template < typename T, int V, GraphType G >
-Graph< T, V, G >::Graph () : vertices_last_index ( 0 ), edges_last_index ( 0 ), vertices_length ( 0 ) {
+Graph< T, V, G >::Graph () : vertices_last_index ( 0 ), edges_last_index ( 0 ), vertices_length ( 0 ), edges_length ( 0 ) {
 };
 
 template < typename T, int V, GraphType G >
