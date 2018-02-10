@@ -43,22 +43,30 @@ class Graph {
 
         T * start_vertex, * end_vertex;
         int weight;
+        bool is_removed;
+
+        Edge () : start_vertex ( nullptr ), end_vertex ( nullptr ), weight ( 0 ), is_removed ( true ) {};
 
     };
 
     struct Vertex {
 
         T data;
+        bool is_removed;
+
+        Vertex () : is_removed ( true ) {};
 
     };
 
     const int size = V;
+    std::size_t vertices_length;
+    std::size_t edges_length;
     const GraphType type = G;
 
     int vertices_last_index, edges_last_index;
 
-    Edge Edges [ G == GraphType::UNDIGRAPH ? V - 1 : V * ( V - 1 ) / 2 ];
-    Vertex Vertices [ V ];
+    Edge Edges [ G == GraphType::UNDIGRAPH ? V - 1 : V * ( V - 1 ) / 2 ] = {};
+    Vertex Vertices [ V ] = {};
 
     public:
 
@@ -74,7 +82,7 @@ class Graph {
 };
 
 template < typename T, int V, GraphType G >
-Graph< T, V, G >::Graph () : vertices_last_index ( 0 ), edges_last_index ( 0 ) {
+Graph< T, V, G >::Graph () : vertices_last_index ( 0 ), edges_last_index ( 0 ), vertices_length ( 0 ) {
 };
 
 template < typename T, int V, GraphType G >
@@ -87,13 +95,22 @@ void Graph< T, V, G >::addVertex ( const T vertex ) {
 
     }
 
-    if ( this -> vertices_last_index != 0 ) {
+    if ( this -> vertices_length == 0 ) {
 
-        ++ this -> vertices_last_index;
+        this -> Vertices [ this -> vertices_last_index ].data = vertex;
+        this -> Vertices [ this -> vertices_last_index ].is_removed = false;
+
+        ++ this -> vertices_length;
+
+        return;
 
     }
 
+    ++ this -> vertices_last_index;
+    ++ this -> vertices_length;
+
     this -> Vertices [ this -> vertices_last_index ].data = vertex;
+    this -> Vertices [ this -> vertices_last_index ].is_removed = false;
 
 };
 
@@ -102,9 +119,9 @@ int Graph< T, V, G >::findVertex ( const T vertex ) const {
 
     int index = this -> vertices_last_index;
 
-    for ( ; index > 0; -- index ) {
+    for ( ; index >= 0; -- index ) {
 
-        if ( this -> Vertices [ index ] == vertex ) {
+        if ( this -> Vertices [ index ].data == vertex && !this -> Vertices [ index ].is_removed ) {
 
             return index;
 
@@ -112,7 +129,7 @@ int Graph< T, V, G >::findVertex ( const T vertex ) const {
 
     }
 
-    return index;
+    return -1;
 
 };
 
@@ -122,7 +139,7 @@ void Graph< T, V, G >::addEdge ( const T vertex1, const T vertex2 ) {
     const int v1 = this -> findVertex ( vertex1 );
     const int v2 = this -> findVertex ( vertex2 );
 
-    if ( !v1 || !v2 ) {
+    if ( v1 == -1 || v2 == -1 ) {
 
         log ( "Either one or both vertices not exist" );
 
@@ -130,14 +147,24 @@ void Graph< T, V, G >::addEdge ( const T vertex1, const T vertex2 ) {
 
     }
 
-    if ( this -> edges_last_index != 0 ) {
+    if ( this -> edges_length == 0 ) {
 
-        ++ this -> edges_last_index;
+        this -> Edges [ this -> edges_last_index ].start_vertex = & this -> Vertices [ v1 ].data;
+        this -> Edges [ this -> edges_last_index ].end_vertex = & this -> Vertices [ v2 ].data;
+        this -> Edges [ this -> edges_last_index ].is_removed = false;
+
+        ++ this -> edges_length;
+
+        return;
 
     }
 
-    this -> Edges [ this -> edges_last_index ] -> start_vertex = & this -> Vertices [ v1 ];
-    this -> Edges [ this -> edges_last_index ] -> end_vertex = & this -> Vertices [ v2 ];
+    ++ this -> edges_last_index;
+    ++ this -> edges_length;
+
+    this -> Edges [ this -> edges_last_index ].start_vertex = & this -> Vertices [ v1 ].data;
+    this -> Edges [ this -> edges_last_index ].end_vertex = & this -> Vertices [ v2 ].data;
+    this -> Edges [ this -> edges_last_index ].is_removed = false;
 
 };
 
