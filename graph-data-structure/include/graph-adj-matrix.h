@@ -100,7 +100,14 @@ void Graph< T, V, G >::depthFirstSearch () const {
     const Edge ( & edges ) [ G == GraphType::UNDIGRAPH ? V - 1 : V * ( V - 1 ) / 2 ] = this -> Edges;
     const Vertex ( & vertices ) [ V ] = this -> Vertices;
 
-    while ( visited_length != this -> size ) {
+    if ( !this -> vertices_length || !this -> edges_length ) {
+
+        log ( "Cannot depth search on empty storage" );
+        return;
+
+    }
+
+    while ( visited_length != this -> vertices_length ) {
 
         if ( visited.size () ) {
 
@@ -108,7 +115,7 @@ void Graph< T, V, G >::depthFirstSearch () const {
                 
                 visited.pop ();
 
-                index = edges [ visited.top () ].end_vertex;
+                index = edges [ index ].end_vertex;
 
             } else {
 

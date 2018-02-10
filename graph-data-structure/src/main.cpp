@@ -9,10 +9,13 @@ int main ( int args_len, char ** args_context ) {
 
     graph.addEdge ( "Lucy", "Jenny" );
     graph.addEdge ( "Jenny", "Lucifer" );
-    graph.addEdge ( "Lucifer", "Jenny" );
+    graph.addEdge ( "LoL", "Jenny" );
+    graph.addEdge ( "Dean", "LoL" );
+    graph.addEdge ( "Femem", "LoL" );
 
     log ( graph.findVertex ( "Jenny" ) );
     log ( graph.findVertex ( "Lucifer" ) );
+    log ( graph.findVertex ( "Sam" ) );
 
     graph.depthFirstSearch ();
 
